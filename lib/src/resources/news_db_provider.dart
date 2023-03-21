@@ -46,7 +46,7 @@ class NewsDbProvider implements Source, Cache{
   }
 
   @override
-  Future<ItemModel?> fetchItem(int id) async {
+  Future<ItemModel?>fetchItem(int id) async {
    final maps =  await db.query(
       "Items",
       //queremos retornar todas as colunas, e nao uma em especifico
@@ -58,9 +58,10 @@ class NewsDbProvider implements Source, Cache{
 
     if(maps.isNotEmpty){
         return ItemModel.fromDb(maps.first);
-    }else {
+    }else{
       return null;
     }
+
   }
 
   @override

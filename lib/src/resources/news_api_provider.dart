@@ -7,7 +7,7 @@ final _urlRoot = 'https://hacker-news.firebaseio.com/v0';
 
 class NewsApiProvider implements Source {
 
-  Client client = Client();
+    Client client = Client();
 
     Future <List<int>> fetchTopIds() async {
     //Await pois o get é assíncrono.
@@ -20,6 +20,7 @@ class NewsApiProvider implements Source {
     return ids.cast<int>();
   }
 
+  @override
   Future<ItemModel> fetchItem(int id) async {
 
     final response = await client.get(Uri.parse('$_urlRoot/item/$id.json'));
