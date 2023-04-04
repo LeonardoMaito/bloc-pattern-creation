@@ -19,5 +19,4 @@ class StoriesProvider extends InheritedWidget {
     return context.dependOnInheritedWidgetOfExactType<StoriesProvider>()!.bloc;
 
   }
-
 }

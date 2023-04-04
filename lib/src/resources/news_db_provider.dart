@@ -25,11 +25,12 @@ class NewsDbProvider implements Source, Cache{
         version: 1,
         //onCreate roda uma vez quando o usuario abre o app pela primeira vez
         onCreate: (Database newDb, int version){
-                newDb.execute("""
+          newDb.execute("""
                   CREATE TABLE Items
                   (
                      id INTEGER PRIMARY KEY,
                      type TEXT,
+                     text TEXT,
                      by TEXT,
                      time INTEGER,
                      parent INTEGER,
@@ -46,8 +47,8 @@ class NewsDbProvider implements Source, Cache{
   }
 
   @override
-  Future<ItemModel?>fetchItem(int id) async {
-   final maps =  await db.query(
+  Future<ItemModel>fetchItem(int id) async {
+    final maps =  await db.query(
       "Items",
       //queremos retornar todas as colunas, e nao uma em especifico
       columns: null,
@@ -57,24 +58,22 @@ class NewsDbProvider implements Source, Cache{
     );
 
     if(maps.isNotEmpty){
-        return ItemModel.fromDb(maps.first);
-    }else{
-      return null;
+      return ItemModel.fromDb(maps.first);
     }
-
+      throw const FormatException('Map is empty!');
   }
 
   @override
   Future<int>addItem(ItemModel item) {
-    return db.insert("Items", item.toMapForDb());
+    return db.insert("Items", item.toMapForDb(),
+    conflictAlgorithm: ConflictAlgorithm.ignore);
   }
 
   //To-do: Armazenar top ids em banco local
   @override
   Future<List<int>> fetchTopIds() {
-    throw UnimplementedError();
+    throw UnimplementedError('Não é necessário');
   }
 }
 //Nao é interessante abrir o banco de dados várias vezes, melhor uma instancia global
 final newsDbProvider = NewsDbProvider();
-

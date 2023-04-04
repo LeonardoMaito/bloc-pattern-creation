@@ -3,13 +3,14 @@ import 'package:hacker_news_api/src/resources/repository.dart';
 import 'package:http/http.dart' show Client;
 import '../models/item_model.dart';
 
-final _urlRoot = 'https://hacker-news.firebaseio.com/v0';
+const _urlRoot = 'https://hacker-news.firebaseio.com/v0';
 
 class NewsApiProvider implements Source {
 
     Client client = Client();
 
-    Future <List<int>> fetchTopIds() async {
+    @override
+  Future <List<int>> fetchTopIds() async {
     //Await pois o get é assíncrono.
     final response = await client.get(Uri.parse('$_urlRoot/topstories.json'));
     //Convertendo o JSON
@@ -29,5 +30,4 @@ class NewsApiProvider implements Source {
     return ItemModel.fromJson(parsedJson);
 
   }
-
 }
