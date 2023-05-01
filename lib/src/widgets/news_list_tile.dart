@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hacker_news_api/src/models/item_model.dart';
+import 'package:hacker_news_api/src/widgets/loading_container.dart';
 import '../blocs/stories_provider.dart';
 
 class NewsListTile extends StatelessWidget {
@@ -15,19 +16,42 @@ class NewsListTile extends StatelessWidget {
       stream: bloc.items,
       builder: (context, AsyncSnapshot<Map<int, Future<ItemModel>>>snapshot){
         if(!snapshot.hasData){
-          return const Text('Stream Still Loading');
+          return LoadingContainer();
         }
         return FutureBuilder(
           future: snapshot.data![itemId],
           builder: (context, AsyncSnapshot<ItemModel> itemSnapshot){
             if(!itemSnapshot.hasData){
-              return Text('Item $itemId Still Loading');
+              return LoadingContainer();
             } else {
-              return Text(itemSnapshot.data!.title!);
+              return buildTile(context, itemSnapshot.data!);
             }
           },
         );
       },
+    );
+  }
+
+  Widget buildTile(BuildContext context, ItemModel item){
+    return Column(
+      children: [
+        ListTile(
+          onTap: () {
+            Navigator.pushNamed(context, '/${item.id}' );
+          },
+            title: Text(item.title!),
+          subtitle: Text('${item.score!} votes'),
+          trailing: Column(
+            children: [
+              Icon(Icons.comment),
+              Text('${item.descendants!}'),
+            ],
+          ),
+        ),
+        const Divider(
+          height: 6.0,
+        ),
+      ],
     );
   }
 }

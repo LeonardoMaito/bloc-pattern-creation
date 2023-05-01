@@ -74,6 +74,11 @@ class NewsDbProvider implements Source, Cache{
   Future<List<int>> fetchTopIds() {
     throw UnimplementedError('Não é necessário');
   }
+
+  @override
+  Future<int> clear(){
+    return db.delete("Items");
+  }
 }
 //Nao é interessante abrir o banco de dados várias vezes, melhor uma instancia global
 final newsDbProvider = NewsDbProvider();

@@ -27,6 +27,10 @@ class StoriesBloc {
     _topIds.sink.add(ids);
   }
 
+  clearCache(){
+    return _repository.clearCache();
+  }
+
   //Metodo helper para ajudar a separar os IDS da stream, para que cada builder utilize apenas o seu
   _itemsTransformer() {
     return ScanStreamTransformer(

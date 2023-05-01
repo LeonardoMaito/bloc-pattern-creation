@@ -13,7 +13,7 @@ class ItemModel {
   final List<dynamic>? kids;
   final String? url;
   final int? score;
-  final String? title;
+  final String title;
   final int? descendants;
 
   ItemModel.fromJson(Map<String, dynamic> parsedJson)
@@ -29,7 +29,7 @@ class ItemModel {
         url = parsedJson['url'],
         score = parsedJson['score'],
         title = parsedJson['title'],
-        descendants = parsedJson['descendants'];
+        descendants = parsedJson['descendants'] ?? 0;
 
   ItemModel.fromDb(Map<String, dynamic> parsedJson)
       : id = parsedJson['id'],
